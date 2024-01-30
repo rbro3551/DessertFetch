@@ -1,0 +1,3 @@
+An app that allows users to view and search through the various desserts that exist on TheMealDB. Users can see written instructions and ingredients for each meal as well as any video instructions that are available on YouTube.
+
+<div align = "center">  <img src="https://github.com/rbro3551/DessertFetch/assets/30447344/a7d68841-607e-4fcc-9b58-0f4853543614" style="padding-right: 10px;" width="300" alt="Description of image 1"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://github.com/rbro3551/DessertFetch/assets/30447344/c4136e21-1d9d-44d7-9374-6eb85b8280a2" width="300" alt="Description of image 2">  </div>
