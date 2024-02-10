@@ -32,6 +32,7 @@ extension MealDetails {
         // Custom decoding for ingredients
         let container = try decoder.singleValueContainer()
         let mealDict = try container.decode([String: String?].self)
+//        print(mealDict)
         var index = 1
         var ingredients: [Ingredient] = []
         

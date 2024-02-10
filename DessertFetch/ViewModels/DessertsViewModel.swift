@@ -8,15 +8,16 @@
 import Foundation
 import Combine
 
+@MainActor
 class DessertsViewModel: ObservableObject {
-    let networkManager: DataFetching
+    let mealListService: MealListService
     @Published var meals: [Meal] = []
     @Published var filteredMeals: [Meal] = []
     @Published var searchText = ""
     private var cancellables = Set<AnyCancellable>()
     
     init(dataFetching: DataFetching) {
-        self.networkManager = dataFetching
+        self.mealListService = MealListService(dataFetching: dataFetching)
     }
     
     
@@ -38,19 +39,21 @@ class DessertsViewModel: ObservableObject {
     }
     
     // Fetch meal data using the network manager
+
     func getMeals() async {
         // Fetching initial list of desserts from provided url
-        guard let url = URL(string: "https://themealdb.com/api/json/v1/1/filter.php?c=Dessert") else { return }
-        Task { @MainActor in
-            do {
-                let data = try await networkManager.download(url: url)
-                let mealsDict = try JSONDecoder().decode(Meals.self, from: data)
-                meals = mealsDict.meals
-            } catch {
-                print("Error fetching data \(error)")
+        
+        do {
+            guard let mealsDict = try await mealListService.getMeals() else {
                 meals = []
+                return
             }
+            meals = mealsDict.meals
+        } catch {
+            print("Error fetching data \(error)")
+            meals = []
         }
+
         
     }
     
@@ -63,3 +66,18 @@ class DessertsViewModel: ObservableObject {
         }
     }
 }
+
+class MealListService {
+    private var networkManager: DataFetching
+    
+    init(dataFetching: DataFetching) {
+        self.networkManager = dataFetching
+    }
+    
+    func getMeals() async throws -> Meals? {
+        guard let url = URL(string: "https://themealdb.com/api/json/v1/1/filter.php?c=Dessert") else { return nil }
+            let data = try await networkManager.download(url: url)
+            let meals = try JSONDecoder().decode(Meals.self, from: data)
+            return meals
+        }
+    }
